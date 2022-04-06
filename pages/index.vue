@@ -1,7 +1,11 @@
 <template>
   <main class="container">
     <nav-bar @showInput="show" />
-    <search-modal v-if="active" @searchValue="getSearchUser" />
+    <search-modal
+      v-if="active"
+      :searchVal="searchInput"
+      @searchValue="getSearchUser"
+    />
     <Loading v-if="$fetchState.pending" />
     <div v-else>
       <div class="cover-image-container">
@@ -29,8 +33,13 @@
               <img src="../static/master.svg" alt="master icon" />
               <p>Master / Influencer</p>
             </div>
-            <div v-for="(skill, index) in master" :key="index" class="skills">
-              <Skill :skill-name="skill.name" />
+            <div class="skills">
+              <Skill
+                v-for="(skill, index) in master"
+                :key="index"
+                class="skills"
+                :skill-name="skill.name"
+              />
             </div>
           </div>
 
@@ -39,8 +48,14 @@
               <img src="../static/expert.svg" alt="expert icon" />
               <p>Expert</p>
             </div>
-            <div v-for="(skill, index) in expert" :key="index" class="skills">
-              <Skill :skill-name="skill.name" />
+
+            <div class="skills">
+              <Skill
+                v-for="(skill, index) in expert"
+                :key="index"
+                class="skills"
+                :skill-name="skill.name"
+              />
             </div>
           </div>
 
@@ -49,12 +64,13 @@
               <img src="../static/proficent.svg" alt="proficent icon" />
               <p>Proficent</p>
             </div>
-            <div
-              v-for="(skill, index) in proficent"
-              :key="index"
-              class="skills"
-            >
-              <Skill :skill-name="skill.name" />
+
+            <div class="skills">
+              <Skill
+                v-for="(skill, index) in proficent"
+                :key="index"
+                :skill-name="skill.name"
+              />
             </div>
           </div>
 
@@ -63,10 +79,13 @@
               <img src="../static/novice.svg" alt="novice icon" />
               <p>Novice</p>
             </div>
-            <div class="skills-container">
-              <div v-for="(skill, index) in novice" :key="index" class="skills">
-                <Skill :skill-name="skill.name" />
-              </div>
+            <div class="skills">
+              <Skill
+                v-for="(skill, index) in novice"
+                :key="index"
+                class="skills"
+                :skill-name="skill.name"
+              />
             </div>
           </div>
         </section>
@@ -97,15 +116,16 @@ export default {
     }
   },
   async fetch() {
-    console.log(this.searchInput)
     await this.getInfo(this.searchInput)
   },
 
   methods: {
     async getInfo(username) {
-      const { data } = await this.$axios.get(
-        `https://bio.torre.co/api/bios/${username}`
-      )
+      const { data } = await this.$axios.get(`/${username}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
       this.userInfo.username = data.person.name
       this.userInfo.job = data.person.professionalHeadline
       this.userInfo.description = data.person.summaryOfBio

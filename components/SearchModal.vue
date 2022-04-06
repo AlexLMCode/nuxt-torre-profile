@@ -12,6 +12,12 @@
 <script>
 export default {
   name: 'SearchModal',
+  props: {
+    searchVal: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       searchInput: '',
@@ -28,6 +34,8 @@ export default {
 <style scoped>
 .search {
   display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 32px 16px;
 }
 
